@@ -9,7 +9,7 @@ def escolher_opcao(lista, msg):
     print("\n==============================")
     escolha = input(f"{msg}\n{opcoes}\n-> ")
     while escolha not in lista:
-        escolha = input(f"{msg}\n{opcoes}\n-> ")
+        escolha = input(f"\n{msg}\n{opcoes}\n-> ")
     return escolha
 
 def maior_valor(lista):
@@ -44,52 +44,54 @@ def achar_indice(lista, escolha):
             break
     return indice
 
-'''#AQUI
-def buscar_indice(lista, opcao):
-    for i in range(len(lista)):
-        if opcao == lista[i]:'''
-
-
-vinhos = ['Dom Bosco', 'Goes', 'Pérgola', 'Cabernet Sauvignon']
-precos = [17, 15, 23, 70]
-
 
 print("Boas vindas a nossa vinheria!!")
 anoNascimento = verifica_numero("Qual seu ano de nascimento?\n-> ")
 idade = 2025 - anoNascimento
-subtotal = 0
+
 if idade < 18:
     print("Você é menor de idade, não pode beber!!")
 else:
-    while True:
-        endereco = input("Qual seu endereço?\n-> ")
-        custoMedio = valor_medio(precos)
-        vinhoCaro = maior_valor(precos)
-        vinhoBarato = menor_valor(precos)
-        print(f"O custo médio dos vinhos de nossa vinheria é {custoMedio}, "
-              f"sendo o {vinhos[vinhoCaro]} o mais caro e {vinhos[vinhoBarato]} o mais barato.")
-        vinhoEscolhido = escolher_opcao(vinhos, "Qual vinho deseja comprar?\n")
-        quantidade = verifica_numero("Quantas garrafas deseja comprar?\n-> ")
+    vinhos = ['Dom Bosco', 'Goes', 'Pérgola', 'Cabernet Sauvignon']
+    precos = [17, 15, 23, 70]
+    quantidadeVinhos = [0] * len(vinhos)
 
-        #AQUI
-        #ACHAR INDICE
+    subtotal = 0
+
+    endereco = input("Qual seu endereço?\n-> ")
+
+    custoMedio = valor_medio(precos)
+    vinhoCaro = maior_valor(precos)
+    vinhoBarato = menor_valor(precos)
+    print(f"O custo médio dos vinhos de nossa vinheria é {custoMedio}, "
+          f"sendo o {vinhos[vinhoCaro]} o mais caro, custando R${precos[vinhoCaro]}, e {vinhos[vinhoBarato]} o mais barato, custando R${precos[vinhoBarato]}.")
+
+    while True:
+
+        vinhoEscolhido = escolher_opcao(vinhos, "Qual vinho deseja comprar?\n")
+        quantidadeEscolhida = verifica_numero("Quantas garrafas deseja comprar?\n-> ")
         indiceVinho = achar_indice(vinhos, vinhoEscolhido)
-        valorVinho = precos[indiceVinho]
-        subtotal += quantidade * valorVinho
+        quantidadeVinhos[indiceVinho] += quantidadeEscolhida
+
         encerrar = escolher_opcao(['Continuar', 'Encerrar'], "Deseja encerrar a compra?")
         if encerrar == "Encerrar":
             break
 
+    for i in range(len(vinhos)):
+        subtotal += precos[i] * quantidadeVinhos[i]
+
     if subtotal > 500:
         frete = 0
-        print("Oba! Você ganhou frete grátis!!")
+        print("\nO seu pedido ultrapassou o valor de R$500,00 e você ganhou FRETE GRÁTIS!!")
     else:
         frete = subtotal * 0.07
 
     total = subtotal + frete
-    print(f"Agradecemos a compra em nossa loja! O total do seu pedido é R${total}. O local de entrega é: {endereco}")
-    print(f"Quantidade de cada garrafa: ")
+    print("\n==============================")
+    print(f"Agradecemos a compra em nossa loja! O seu pedido será entregue no endereço: {endereco}.\n"
+          
+          f"\nQuantidade de cada garrafa:")
+    for i in range(len(vinhos)):
+        print(f"{vinhos[i]} - {quantidadeVinhos[i]} garrafa(s)")
 
-
-# Arrumar num 8 e colocar valores dos vinhos baratos e caros
-# Arrumar num 11 e printar quantidade de cada tipo de garrafa
+    print(f"\nO total do seu pedido é R${total:.2f}.")
